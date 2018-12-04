@@ -2,17 +2,16 @@ package com.gitlab.pedrioko.ats.vaadin.demo;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.value.ValueChangeMode;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.PWA;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -40,7 +39,7 @@ public class MainView extends VerticalLayout {
                             ReflectionJavaUtil.getValueFieldObject(e.getName(), a)
                     , (a, x) ->
                             ReflectionJavaUtil.setValueFieldObject(e.getName(), a, x)
-                    );
+            );
         });
 
         Button button = new Button("Click me",
@@ -56,6 +55,18 @@ public class MainView extends VerticalLayout {
         actions.add(button);
         add(layoutWithBinder);
         add(actions);
+
+        Grid grid = new Grid<>();
+        Test test = new Test();
+        test.setTest("PPP");
+        test.setTest2("PPP2");
+        grid.setItems(Arrays.asList(test));
+        fields.forEach(e -> {
+            grid.addColumn((a) ->
+                    ReflectionJavaUtil.getValueFieldObject(e.getName(), a)
+            ).setHeader(e.getName());
+        });
+        add(grid);
     }
 
 }
